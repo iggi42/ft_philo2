@@ -14,7 +14,7 @@ CC = cc
 CFLAGS += -MD -Wall -Wextra -Werror
 CFLAGS += -g
 
-SRCS = utils.c ph_main.c
+SRCS = utils.c ph_main.c frk.c
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(OBJS:.o=.d)
