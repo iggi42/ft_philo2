@@ -6,7 +6,7 @@
 #    By: fkruger <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/13 01:51:41 by fkruger           #+#    #+#              #
-#    Updated: 2026/07/24 00:49:22 by fkruger          ###   ########.fr        #
+#    Updated: 2026/07/24 01:10:07 by fkruger          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = philo
@@ -14,7 +14,7 @@ CC = cc
 CFLAGS += -MD -Wall -Wextra -Werror
 CFLAGS += -g
 
-SRCS = utils.c ph_main.c frk.c
+SRCS = utils.c ph_main.c frk.c time.c
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(OBJS:.o=.d)
