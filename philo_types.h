@@ -38,7 +38,6 @@ typedef struct s_philo
 	t_timespan			last_meal;
 	pthread_mutex_t		last_meal_mutex;
 	t_philo_id			id;
-	pthread_t			thread_id;
 	t_philo_conf		*c;
 }						t_philo;
 

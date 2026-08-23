@@ -1,0 +1,118 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   run_sim.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkruger <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/13 03:39:12 by fkruger           #+#    #+#             */
+/*   Updated: 2026/07/14 20:51:11 by fkruger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "frk.h"
+#include "philo.h"
+#include "time.h"
+#include "utils.h"
+#include <pthread.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+static t_frk	*bring_the_cutlery(size_t n)
+{
+	t_frk	*result;
+	size_t	i;
+
+	i = 0;
+	result = ft_calloc(n, sizeof(t_frk));
+	while (result != NULL && i < n)
+		if (!init_frk(&result[i++]))
+			result = (free(result), NULL);
+	return (result);
+}
+
+static void	init_thinker(t_philo *fresh, size_t i, t_philo_conf *c,
+		t_frk *cutlery)
+{
+	fresh->id = i + 1;
+	fresh->c = c;
+	fresh->left = &cutlery[i];
+	fresh->right = &cutlery[(i + 1) % c->n_phil];
+}
+
+static void	cleanup_philos(t_philo *philos, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		pthread_mutex_destroy(&philos[i].last_meal_mutex);
+		i++;
+	}
+	free(philos);
+}
+
+static t_philo	*create_thinkers(t_philo_conf *c, t_frk *cutlery)
+{
+	t_philo	*thinkers;
+	size_t	i;
+
+	i = 0;
+	thinkers = ft_calloc(c->n_phil, sizeof(t_philo));
+	if (thinkers == NULL || cutlery == NULL)
+		return (NULL);
+	while (i < c->n_phil)
+	{
+		init_thinker(&thinkers[i], i, c, cutlery);
+		if (pthread_mutex_init(&(thinkers[i].last_meal_mutex), NULL))
+			return (cleanup_philos(thinkers, i), NULL);
+		i++;
+	}
+	return (thinkers);
+}
+
+static pthread_t	*start_thinkers(t_philo_conf *c, t_philo *philo)
+{
+	pthread_t	*thread_ids;
+	size_t		i;
+
+	void		*(*routine)(void *);
+	thread_ids = ft_calloc(c->n_phil, sizeof(pthread_t));
+	i = 0;
+	if (thread_ids == NULL)
+		return (NULL);
+	if (c->max_meals >= 0)
+		routine = philo_routine_endless;
+	else
+		routine = philo_routine_maxmeals;
+	while (i < c->n_phil)
+	{
+		if (!pthread_create(&thread_ids[i], NULL, routine, &philo[i]))
+			perror("pthread_create failed");
+		i++;
+	}
+	return (thread_ids);
+}
+
+static void	wait4thinkers(pthread_t *ids, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+		if (!pthread_join(ids[i++], NULL))
+			perror("pthread_join failed");
+}
+
+bool	run_sim(t_philo_conf *c)
+{
+	t_frk		*frks;
+	t_philo		*philos;
+	pthread_t	*pthr_id;
+
+	frks = bring_the_cutlery(c->n_phil);
+	pthr_id = create_thinkers(c, frks);
+	return (run_table(philos, n));
+	return (cleanup_philos(thinkers, c->n_phil), NULL);
+}

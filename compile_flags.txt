@@ -1,1 +1,4 @@
 -pthread
+-Wall
+-Wextra
+-Werr
