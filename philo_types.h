@@ -14,6 +14,7 @@
 # define PHILO_TYPES_H
 # include "frk.h"
 # include "time.h"
+# include "death_watch.h"
 # include <stdbool.h>
 # include <stddef.h>
 
@@ -29,6 +30,7 @@ typedef struct s_philo_conf
 	t_timespan			t2eat;
 	t_timespan			t2nap;
 	int					max_meals;
+	t_ds ds;
 }						t_philo_conf;
 
 typedef struct s_philo

@@ -46,11 +46,18 @@ static void	cleanup_philos(t_philo *philos, size_t n)
 
 	i = 0;
 	while (i < n)
-	{
-		pthread_mutex_destroy(&philos[i].last_meal_mutex);
-		i++;
-	}
+		pthread_mutex_destroy(&philos[i++].last_meal_mutex);
 	free(philos);
+}
+
+static void	cleanup_forks(t_frk *cutlery, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+		destroy_frk(&cutlery[i++]);
+	free(cutlery);
 }
 
 static t_philo	*create_thinkers(t_philo_conf *c, t_frk *cutlery)
@@ -86,6 +93,7 @@ static pthread_t	*start_thinkers(t_philo_conf *c, t_philo *philo)
 		routine = philo_routine_endless;
 	else
 		routine = philo_routine_maxmeals;
+	start_timer();
 	while (i < c->n_phil)
 	{
 		if (!pthread_create(&thread_ids[i], NULL, routine, &philo[i]))
@@ -108,11 +116,14 @@ static void	wait4thinkers(pthread_t *ids, size_t n)
 bool	run_sim(t_philo_conf *c)
 {
 	t_frk		*frks;
-	t_philo		*philos;
+	t_philo		*thinkers;
 	pthread_t	*pthr_id;
 
 	frks = bring_the_cutlery(c->n_phil);
-	pthr_id = create_thinkers(c, frks);
-	return (run_table(philos, n));
-	return (cleanup_philos(thinkers, c->n_phil), NULL);
+	thinkers = create_thinkers(c, frks);
+	pthr_id = start_thinkers(c, thinkers);
+	wait4thinkers(pthr_id, c->n_phil);
+	cleanup_philos(thinkers, c->n_phil);
+	cleanup_forks(frks, c->n_phil);
+	return true;
 }

@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "philo.h"
-#include <bits/pthreadtypes.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -37,7 +36,7 @@ void	log_thinking(t_philo *philo)
 
 void	log_animated(t_philo *philo)
 {
-	printf("%ld: [%d] was born. left(%p) right(%p)\n", read_timer(),
+	printf("%10ld: [%d] was born. left(%p) right(%p)\n", read_timer(),
 		(int)philo->id, philo->left, philo->right);
 }
 
@@ -46,7 +45,8 @@ void	log_died(t_philo *philo)
 	printf("%10ld: [%d] died\n", read_timer(), (int)philo->id);
 }
 
-bool	io_queue(void (*print_smth)(t_philo *p), t_philo *p)
+// returns true if no philo has died yet
+bool	log_queue(void (*print_smth)(t_philo *p), t_philo *p)
 {
 	static pthread_mutex_t	io_mut = PTHREAD_MUTEX_INITIALIZER;
 	static bool				io_open;

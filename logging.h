@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   frk.h                                              :+:      :+:    :+:   */
+/*   logging.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fkruger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/18 11:57:59 by fkruger           #+#    #+#             */
-/*   Updated: 2026/07/24 01:03:25 by fkruger          ###   ########.fr       */
+/*   Created: 2026/08/23 22:07:06 by fkruger           #+#    #+#             */
+/*   Updated: 2026/08/23 22:07:07 by fkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRK_H
-# define FRK_H
-# include <pthread.h>
-# include <stdbool.h>
+#ifndef LOGGING_H
+# define LOGGING_H
+# include "philo_types.h"
 
-typedef struct s_frk
-{
-	bool			in_use;
-	pthread_mutex_t	mutex;
-}					t_frk;
-
-// set default values really
-bool				init_frk(t_frk *frk);
-bool				destroy_frk(t_frk *frk);
-
-// ...
-bool				pickup(t_frk *frk);
-bool				putdown(t_frk *frk);
+void	log_forklift(t_philo *philo);
+void	log_eating(t_philo *philo);
+void	log_sleeping(t_philo *philo);
+void	log_thinking(t_philo *philo);
+void	log_animated(t_philo *philo);
+void	log_died(t_philo *philo);
+bool	log_queue(void (*print_smth)(t_philo *p), t_philo *p);
 #endif
