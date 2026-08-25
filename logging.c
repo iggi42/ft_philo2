@@ -50,7 +50,7 @@ bool	log_queue(void (*print_smth)(t_philo *p), t_philo *p)
 {
 	static pthread_mutex_t	io_mut = PTHREAD_MUTEX_INITIALIZER;
 	static bool				io_open;
-	bool result;
+	bool					result;
 
 	if (pthread_mutex_lock(&io_mut))
 		return (false);

@@ -1,4 +1,0 @@
--pthread
--Wall
--Wextra
--Werr
