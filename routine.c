@@ -70,6 +70,13 @@ void	ft_switch(t_frk **a, t_frk **b)
 	*b = c;
 }
 
+static void philo_put_down(t_frk *fs[2])
+{
+	putdown(fs[0]);
+	putdown(fs[1]);
+}
+
+
 // returns true if it has eaten
 // returns false if philo should abort
 // logging is included as side effect
@@ -88,18 +95,18 @@ static bool	philo_routine_eating(t_philo *me)
 		if (pickup(fs[0]))
 		{
 			if (!log_queue(log_forklift, me))
-				return (false);
+				return (putdown(fs[0]), false);
 			if (pickup(fs[1]))
 			{
 				if (!log_queue(log_forklift, me))
-					return (false);
+					return (philo_put_down(fs), false);
 				if (!log_queue(log_eating, me))
-					return (false);
+					return (philo_put_down(fs), false);
 				if (!set_last_meal2now(me))
-					return (false);
+					return (philo_put_down(fs), false);
 				has_eaten = true;
 				if (!philo_sleep(me->c->t2eat))
-					return (false);
+					return (philo_put_down(fs), false);
 				putdown(fs[1]);
 			}
 			putdown(fs[0]);
@@ -108,7 +115,7 @@ static bool	philo_routine_eating(t_philo *me)
 			return (true);
 		if(++tries % 3)
 			ft_switch(&fs[0], &fs[1]);
-		usleep(50 * me->c->n_phil);
+		usleep(100);
 	}
 }
 

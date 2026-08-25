@@ -138,7 +138,7 @@ static void	find_starved(t_philo_conf *c, t_philo *philo)
 		if(has_starved(&philo[i]))
 			return;
 		i = (i + 1) % c->n_phil;
-		usleep(100000 / c->n_phil);
+		usleep(400);
 	}
 }
 

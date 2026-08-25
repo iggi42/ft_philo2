@@ -33,34 +33,10 @@ bool	destroy_frk(t_frk *frk)
 
 bool	pickup(t_frk *frk)
 {
-	bool	result;
-
-	result = false;
-	if (pthread_mutex_lock(&frk->mutex))
-		return (false);
-	if (!frk->in_use)
-	{
-		frk->in_use = true;
-		result = true;
-	}
-	if (pthread_mutex_unlock(&frk->mutex))
-		return (false);
-	return (result);
+	return (!pthread_mutex_lock(&frk->mutex));
 }
 
 bool	putdown(t_frk *frk)
 {
-	bool	result;
-
-	result = false;
-	if (pthread_mutex_lock(&frk->mutex))
-		return (false);
-	if (frk->in_use)
-	{
-		frk->in_use = false;
-		result = true;
-	}
-	if (pthread_mutex_unlock(&frk->mutex))
-		return (false);
-	return (result);
+	return (!pthread_mutex_unlock(&frk->mutex));
 }
