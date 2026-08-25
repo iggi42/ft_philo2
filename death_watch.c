@@ -1,5 +1,4 @@
 #include "death_watch.h"
-#include <bits/pthreadtypes.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>

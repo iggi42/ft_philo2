@@ -21,7 +21,7 @@ bool	init_frk(t_frk *frk)
 	if (!frk)
 		return (false);
 	frk->in_use = false;
-	return (pthread_mutex_init(&frk->mutex, NULL) != 0);
+	return (pthread_mutex_init(&frk->mutex, NULL) == 0);
 }
 
 bool	destroy_frk(t_frk *frk)

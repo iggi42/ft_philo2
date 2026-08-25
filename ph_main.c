@@ -9,7 +9,6 @@
 /*   Updated: 2026/07/13 09:12:37 by fkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "death_watch.h"
 #include "philo.h"
 #include "utils.h"
 #include <stdio.h>
@@ -35,8 +34,8 @@ bool	parse_req_args(char **args, t_philo_conf *c)
 	if (!ft_aisi(args[0]) || !ft_aisi(args[1]) || !ft_aisi(args[2])
 		|| !ft_aisi(args[3]))
 		return (false);
-	if(!form_death_watch(&c->ds))
-		return false;
+	// if(!form_death_watch(&c->ds))
+	// 	return false;
 	c->n_phil = ft_atoi(args[0]);
 	c->t2die = ft_atoi(args[1]);
 	c->t2eat = ft_atoi(args[2]);

@@ -13,6 +13,7 @@
 #include "philo.h"
 #include "time.h"
 #include "utils.h"
+#include "logging.h"
 #include <pthread.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -87,16 +88,17 @@ static pthread_t	*start_thinkers(t_philo_conf *c, t_philo *philo)
 	void		*(*routine)(void *);
 	thread_ids = ft_calloc(c->n_phil, sizeof(pthread_t));
 	i = 0;
-	if (thread_ids == NULL)
+	if (thread_ids == NULL || philo == NULL)
 		return (NULL);
 	if (c->max_meals >= 0)
 		routine = philo_routine_endless;
 	else
 		routine = philo_routine_maxmeals;
+	log_queue(NULL, NULL);
 	start_timer();
 	while (i < c->n_phil)
 	{
-		if (!pthread_create(&thread_ids[i], NULL, routine, &philo[i]))
+		if (pthread_create(&thread_ids[i], NULL, routine, &philo[i]))
 			perror("pthread_create failed");
 		i++;
 	}
@@ -107,9 +109,12 @@ static void	wait4thinkers(pthread_t *ids, size_t n)
 {
 	size_t	i;
 
+	if(ids == NULL)
+		return;
+
 	i = 0;
 	while (i < n)
-		if (!pthread_join(ids[i++], NULL))
+		if (pthread_join(ids[i++], NULL))
 			perror("pthread_join failed");
 }
 
