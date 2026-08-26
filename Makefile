@@ -6,13 +6,13 @@
 #    By: fkruger <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/13 01:51:41 by fkruger           #+#    #+#              #
-#    Updated: 2026/08/26 01:01:50 by fkruger          ###   ########.fr        #
+#    Updated: 2026/08/26 22:28:08 by fkruger          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = philo
 CC = cc
 CFLAGS += -MD -Wall -Wextra -Werror
-CFLAGS += -g
+#CFLAGS += -g
 
 # utils function
 SRCS += utils.c ph_main.c time.c
