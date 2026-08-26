@@ -16,33 +16,33 @@
 
 void	log_forklift(t_philo *philo)
 {
-	printf("%10ld: [%d] has taken a fork\n", read_timer(), (int)philo->id);
+	printf("%ld %d has taken a fork\n", read_timer(), (int)philo->id);
 }
 
 void	log_eating(t_philo *philo)
 {
-	printf("%10ld: [%d] is eating\n", read_timer(), (int)philo->id);
+	printf("%ld %d is eating\n", read_timer(), (int)philo->id);
 }
 
 void	log_sleeping(t_philo *philo)
 {
-	printf("%10ld: [%d] is sleeping\n", read_timer(), (int)philo->id);
+	printf("%ld %d is sleeping\n", read_timer(), (int)philo->id);
 }
 
 void	log_thinking(t_philo *philo)
 {
-	printf("%10ld: [%d] is thinking\n", read_timer(), (int)philo->id);
+	printf("%ld %d is thinking\n", read_timer(), (int)philo->id);
 }
 
 void	log_animated(t_philo *philo)
 {
-	printf("%10ld: [%d] was born. left(%p) right(%p)\n", read_timer(),
+	printf("%ld %d was born. left(%p) right(%p)\n", read_timer(),
 		(int)philo->id, philo->left, philo->right);
 }
 
 void	log_died(t_philo *philo)
 {
-	printf("%10ld: [%d] died\n", read_timer(), (int)philo->id);
+	printf("%ld %d died\n", read_timer(), (int)philo->id);
 }
 
 // returns true if no philo has died yet

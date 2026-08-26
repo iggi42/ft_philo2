@@ -12,9 +12,11 @@
 #include "frk.h"
 #include "logging.h"
 #include "philo.h"
+#include "meal.h"
 #include "time.h"
 #include "utils.h"
 #include <pthread.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,8 +30,11 @@ static t_frk	*bring_the_cutlery(size_t n)
 	i = 0;
 	result = ft_calloc(n, sizeof(t_frk));
 	while (result != NULL && i < n)
-		if (!init_frk(&result[i++]))
+	{
+		if (!init_frk(&result[i], i))
 			result = (free(result), NULL);
+		i++;
+	}
 	return (result);
 }
 
@@ -122,7 +127,7 @@ bool	has_starved(t_philo *p)
 	return (result);
 }
 
-static void	ft_phil_void(t_philo *p)
+void	ft_phil_void(t_philo *p)
 {
 	(void)p;
 }
@@ -130,17 +135,44 @@ static void	ft_phil_void(t_philo *p)
 //TODO: return if all philos have meal->meal = -1
 static void	find_starved(t_philo_conf *c, t_philo *philo)
 {
-	size_t	i;
-
-	i = 0;
-	while (log_queue(ft_phil_void, &philo[i]))
+	size_t i = 0;
+	while (true)
 	{
 		if(has_starved(&philo[i]))
-			return;
+			return ;
+		usleep(1000);
 		i = (i + 1) % c->n_phil;
-		usleep(400);
 	}
 }
+
+/*
+static void	find_starved(t_philo_conf *c, t_philo *philo)
+{
+	size_t	i;
+	bool all_dead;
+
+	i = 0;
+	all_dead = true;
+	while (log_queue(ft_phil_void, NULL))
+	{
+		if(!is_last_meal2on(&philo[i]))
+		{
+			if(++i >= c->n_phil)
+				return ;
+			continue;
+		}
+		all_dead = false;
+		if(has_starved(&philo[i]))
+			return;
+		if(i++ >= c->n_phil)
+		{
+			if(all_dead)
+				return ;
+			i = 0;
+		}
+		usleep(200);
+	}
+}*/
 
 static void	wait4thinkers(pthread_t *ids, size_t n)
 {
@@ -150,8 +182,11 @@ static void	wait4thinkers(pthread_t *ids, size_t n)
 		return ;
 	i = 0;
 	while (i < n)
+	{
+		// printf("LOL starting to join %ld \n", i);
 		if (pthread_join(ids[i++], NULL))
 			perror("pthread_join failed");
+	}
 	free(ids);
 }
 

@@ -11,7 +11,7 @@
 # **************************************************************************** #
 NAME = philo
 CC = cc
-CFLAGS += -MD -Wall -Wextra -Werror -O3
+CFLAGS += -MD -Wall -Wextra -Werror
 CFLAGS += -g
 
 SRCS = utils.c ph_main.c frk.c time.c run_sim.c routine.c logging.c

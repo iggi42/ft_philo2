@@ -17,12 +17,12 @@
 
 typedef struct s_frk
 {
-	bool			in_use;
+	unsigned char	id;
 	pthread_mutex_t	mutex;
 }					t_frk;
 
 // set default values really
-bool				init_frk(t_frk *frk);
+bool				init_frk(t_frk *frk, unsigned char id);
 bool				destroy_frk(t_frk *frk);
 
 // ...

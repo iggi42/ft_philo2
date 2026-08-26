@@ -16,11 +16,11 @@
 
 // val is true if the fork is in use
 
-bool	init_frk(t_frk *frk)
+bool	init_frk(t_frk *frk, unsigned char id)
 {
 	if (!frk)
 		return (false);
-	frk->in_use = false;
+	frk->id = id;
 	return (pthread_mutex_init(&frk->mutex, NULL) == 0);
 }
 

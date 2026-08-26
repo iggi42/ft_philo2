@@ -50,7 +50,7 @@ int	endless_feast(char **args)
 	if (!parse_req_args(args, &c))
 		return (-1);
 	c.max_meals = -1;
-	return (run_sim(&c));
+	return (!run_sim(&c));
 }
 
 int	limited_feast(char **args)
