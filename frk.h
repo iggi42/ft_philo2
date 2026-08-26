@@ -18,6 +18,7 @@
 typedef struct s_frk
 {
 	unsigned char	id;
+	bool			taken;
 	pthread_mutex_t	mutex;
 }					t_frk;
 
