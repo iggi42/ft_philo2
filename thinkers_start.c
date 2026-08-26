@@ -32,7 +32,7 @@ static pthread_t	*start_threats(t_philo_conf *c, t_philo *philo,
 	{
 		if (pthread_create(&thread_ids[i], NULL, routine, &philo[i]))
 		{
-			log_queue(log_died, &philo[i]);
+			log_queue(log_close_queue, &philo[i]);
 			wait4thinkers(thread_ids, i);
 			return (NULL);
 		}
