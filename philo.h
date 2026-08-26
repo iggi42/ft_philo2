@@ -16,8 +16,6 @@
 # include <stdbool.h>
 # include <stddef.h>
 
-t_philo	*new_philos(t_philo_conf *c, t_frk *cutler);
-
 // run a round of philos eating
 bool	run_sim(t_philo_conf *c);
 

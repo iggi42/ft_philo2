@@ -17,7 +17,8 @@ CFLAGS += -g
 # utils function
 SRCS += utils.c ph_main.c time.c
 # core logic
-SRCS += frk.c cutlery.c run_sim.c meal.c routine.c routine_eating.c thinkers.c
+SRCS += frk.c cutlery.c run_sim.c meal.c routine.c routine_eating.c
+SRCS += thinkers.c thinkers_start.c
 # logging
 SRCS += logging.c log_queue.c
 
