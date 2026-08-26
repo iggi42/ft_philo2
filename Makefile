@@ -14,7 +14,12 @@ CC = cc
 CFLAGS += -MD -Wall -Wextra -Werror
 CFLAGS += -g
 
-SRCS = utils.c ph_main.c frk.c time.c run_sim.c routine.c logging.c
+# utils function
+SRCS += utils.c ph_main.c time.c
+# core logic
+SRCS += frk.c cutlery.c run_sim.c meal.c routine.c routine_eating.c thinkers.c
+# logging
+SRCS += logging.c log_queue.c
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(OBJS:.o=.d)
