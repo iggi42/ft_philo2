@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "logging.h"
 #include "meal.h"
+#include "logging.h"
 
 // returns true if it worked as expected
 // returns false if the philo should abort

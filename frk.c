@@ -10,9 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "frk.h"
-#include <pthread.h>
-#include <stdbool.h>
-#include <stdio.h>
 
 // val is true if the fork is in use
 bool	init_frk(t_frk *frk, unsigned char id)

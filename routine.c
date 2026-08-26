@@ -14,17 +14,6 @@
 #include "meal.h"
 #include <unistd.h>
 
-// future IDEA: wait only a fracation at once
-// and check death watch and go back to sleep
-// might be necessary to use timer values
-// returns true if it has slept the full time
-// returns false if philo should abort
-static bool	philo_sleep(t_timespan t)
-{
-	usleep(t * 1000);
-	return (true);
-}
-
 // returns true if it has slept the full time
 // returns false if philo should abort
 // logging is included as side effect (sleeping log at start,
@@ -33,8 +22,7 @@ static bool	philo_routine_sleep(t_philo *thinker)
 {
 	if (!log_queue(log_sleeping, thinker))
 		return (false);
-	if (!philo_sleep(thinker->c->t2nap))
-		return (false);
+	usleep(thinker->c->t2nap * 1000);
 	return (log_queue(log_thinking, thinker));
 }
 

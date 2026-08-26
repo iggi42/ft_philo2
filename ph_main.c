@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 #include "philo.h"
 #include "utils.h"
-#include <stdio.h>
 
 // return true if all parameters were successfully parsed
 // return false on parsing errors and so on.

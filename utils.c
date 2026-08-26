@@ -9,7 +9,7 @@
 /*   Updated: 2026/07/18 12:03:33 by fkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "philo.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 

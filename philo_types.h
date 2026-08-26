@@ -19,7 +19,6 @@
 
 // 0 is not a valid philo id btw
 typedef unsigned char	t_philo_id;
-# define NO_PHILO 0
 
 // if max_meals is -1, the simulation should run endless / till one dies
 typedef struct s_philo_conf

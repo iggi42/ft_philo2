@@ -9,7 +9,7 @@
 /*   Updated: 2026/07/19 19:50:09 by fkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "philo.h"
+#include "philo_types.h"
 #include <stdio.h>
 
 void	log_forklift(t_philo *philo)

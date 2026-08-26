@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "logging.h"
-#include "philo_types.h"
 #include "routine.h"
 #include "utils.h"
 #include <stdlib.h>

@@ -13,7 +13,6 @@
 #include "frk.h"
 #include "logging.h"
 #include "meal.h"
-#include "philo_types.h"
 #include <unistd.h>
 
 static void	ft_switch(t_frk **a, t_frk **b)

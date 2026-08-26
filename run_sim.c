@@ -10,19 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "cutlery.h"
-#include "frk.h"
 #include "logging.h"
 #include "meal.h"
 #include "philo.h"
-#include "philo_types.h"
 #include "thinkers.h"
 #include "time.h"
-#include "utils.h"
-#include <pthread.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 static void	find_starved(t_philo_conf *c, t_philo *philo)
