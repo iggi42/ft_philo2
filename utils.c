@@ -12,21 +12,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-
-void	*ft_memset(void *s, int c, size_t n)
-{
-	size_t			i;
-	unsigned char	*ptr;
-
-	i = 0;
-	ptr = (unsigned char *)s;
-	while (s != NULL && i < n)
-	{
-		ptr[i] = (unsigned char)c;
-		i++;
-	}
-	return (s);
-}
+#include <string.h>
 
 void	*ft_calloc(size_t n_el, size_t el_size)
 {
@@ -36,7 +22,7 @@ void	*ft_calloc(size_t n_el, size_t el_size)
 		return (NULL);
 	el_size *= n_el;
 	result = malloc(el_size);
-	ft_memset(result, 0, el_size);
+	memset(result, 0, el_size);
 	return (result);
 }
 
