@@ -41,15 +41,15 @@ void	set_last_meal2off(t_philo *p)
 
 bool	is_last_meal2on(t_philo *p)
 {
-	bool result;
+	bool	result;
+
 	if (p == NULL || pthread_mutex_lock(&p->last_meal_mutex))
-		return false;
+		return (false);
 	result = p->last_meal == -1;
 	if (!pthread_mutex_unlock(&p->last_meal_mutex))
-		return false;
-	return result;
+		return (false);
+	return (result);
 }
-
 
 // IDEA: wait only a fracation at once and check death watch and go back to sleep
 // might be necessary to use timer values
@@ -102,8 +102,8 @@ static bool	philo_routine_eating(t_philo *me)
 	has_eaten = false;
 	fs[0] = me->left;
 	fs[1] = me->right;
-	if(me->right->id < me->left->id)
-		ft_switch(&fs[0], &fs[1]);
+	// if(me->right->id < me->left->id)
+	// 	ft_switch(&fs[0], &fs[1]);
 	if (pickup(fs[0]))
 	{
 		if (!log_queue(log_forklift, me) || (fs[0] == fs[1]))
@@ -136,11 +136,11 @@ void	*philo_routine_maxmeals(void *s)
 	while (true)
 	{
 		if (!philo_routine_eating(me))
-			return NULL;
+			return (NULL);
 		if (++meals >= me->c->max_meals)
 			break ;
 		if (!philo_routine_sleep(me))
-			return NULL;
+			return (NULL);
 	}
 	set_last_meal2off(me);
 	return (NULL);

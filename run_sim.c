@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 #include "frk.h"
 #include "logging.h"
-#include "philo.h"
 #include "meal.h"
+#include "philo.h"
+#include "philo_types.h"
 #include "time.h"
 #include "utils.h"
 #include <pthread.h>
@@ -113,34 +114,61 @@ static pthread_t	*start_thinkers(t_philo_conf *c, t_philo *philo)
 	return (thread_ids);
 }
 
+
+// returns the time since the last meal was registred, or -1 if thread is happy.
+t_timespan read_philo_state(t_philo *p)
+{
+	t_timespan result;
+	
+	if (pthread_mutex_lock(&p->last_meal_mutex))
+		return (-1);
+	if(p->last_meal < 0)
+		result = -1;
+	else
+		result = ((read_timer()	- p->last_meal));
+	if (result >= p->c->t2die && log_queue(log_died, p))
+		p->last_meal = -1;
+	if (pthread_mutex_unlock(&p->last_meal_mutex))
+		return (-1);
+	return result;
+}
+
+/*
 bool	has_starved(t_philo *p)
 {
-	bool result;
+	bool	result;
 
 	if (pthread_mutex_lock(&p->last_meal_mutex))
 		return (false);
-	result = (p->last_meal != -1) && ((read_timer() - p->last_meal) >= p->c->t2die);
-	if(result && log_queue(log_died, p))
+	result = (p->last_meal != -1) && ((read_timer()
+				- p->last_meal) >= p->c->t2die);
+	if (result && log_queue(log_died, p))
 		p->last_meal = -1;
 	if (pthread_mutex_unlock(&p->last_meal_mutex))
 		return (false);
 	return (result);
-}
+} */
 
 void	ft_phil_void(t_philo *p)
 {
 	(void)p;
 }
 
-//TODO: return if all philos have meal->meal = -1
+// TODO: return if all philos have meal->meal = -1
 static void	find_starved(t_philo_conf *c, t_philo *philo)
 {
-	size_t i = 0;
-	while (true)
+	size_t	i;
+	t_timespan t;
+
+	i = 0;
+	while (i < c->n_phil)
 	{
-		if(has_starved(&philo[i]))
+		t = read_philo_state(&philo[i]);
+		if (t >= c->t2die)
 			return ;
-		usleep(1000);
+		else if(t >= 0)
+
+		usleep(300);
 		i = (i + 1) % c->n_phil;
 	}
 }
@@ -149,7 +177,8 @@ static void	find_starved(t_philo_conf *c, t_philo *philo)
 static void	find_starved(t_philo_conf *c, t_philo *philo)
 {
 	size_t	i;
-	bool all_dead;
+	bool	all_dead;
+	size_t	i;
 
 	i = 0;
 	all_dead = true;
@@ -159,11 +188,11 @@ static void	find_starved(t_philo_conf *c, t_philo *philo)
 		{
 			if(++i >= c->n_phil)
 				return ;
-			continue;
+			continue ;
 		}
 		all_dead = false;
 		if(has_starved(&philo[i]))
-			return;
+			return ;
 		if(i++ >= c->n_phil)
 		{
 			if(all_dead)
@@ -173,17 +202,16 @@ static void	find_starved(t_philo_conf *c, t_philo *philo)
 		usleep(200);
 	}
 }*/
-
 static void	wait4thinkers(pthread_t *ids, size_t n)
 {
-	size_t	i;
+	size_t i;
 
 	if (ids == NULL)
 		return ;
 	i = 0;
 	while (i < n)
 	{
-		// printf("LOL starting to join %ld \n", i);
+		printf("LOL starting to join %ld \n", i);
 		if (pthread_join(ids[i++], NULL))
 			perror("pthread_join failed");
 	}
