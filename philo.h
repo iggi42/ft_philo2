@@ -17,23 +17,8 @@
 # include <stddef.h>
 
 t_philo	*new_philos(t_philo_conf *c, t_frk *cutler);
-void	set_last_meal2now(t_philo *p);
-void	turn_off_philo(t_philo *p);
 
-// run a round
+// run a round of philos eating
 bool	run_sim(t_philo_conf *c);
-
-void	*philo_routine_endless(void *);
-void	*philo_routine_maxmeals(void *);
-
-/*
-bool	io_queue(void (*print_smth)(t_philo *p), t_philo *p);
-void	log_animated(t_philo *philo);
-void	log_forklift(t_philo *philo);
-void	log_eating(t_philo *philo);
-void	log_sleeping(t_philo *philo);
-void	log_thinking(t_philo *philo);
-void	log_died(t_philo *philo);
-*/
 
 #endif

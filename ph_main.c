@@ -13,19 +13,6 @@
 #include "utils.h"
 #include <stdio.h>
 
-void	print_config(t_philo_conf *c)
-{
-	if (c == NULL)
-		printf("config: [NULL]\n");
-	else
-		printf("config.n_phil = %zu\nconfig.t2die = %ld\nconfig.t2eat = %ld\nconfig.t2nap = %ld\nconfig.max_meals = %d\n",
-			c->n_phil,
-			c->t2die,
-			c->t2eat,
-			c->t2nap,
-			c->max_meals);
-}
-
 // return true if all parameters were successfully parsed
 // return false on parsing errors and so on.
 // only do the required args in this function
@@ -34,8 +21,6 @@ bool	parse_req_args(char **args, t_philo_conf *c)
 	if (!ft_aisi(args[0]) || !ft_aisi(args[1]) || !ft_aisi(args[2])
 		|| !ft_aisi(args[3]))
 		return (false);
-	// if(!form_death_watch(&c->ds))
-	// 	return false;
 	c->n_phil = ft_atoi(args[0]);
 	c->t2die = ft_atoi(args[1]);
 	c->t2eat = ft_atoi(args[2]);

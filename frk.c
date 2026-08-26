@@ -15,7 +15,6 @@
 #include <stdio.h>
 
 // val is true if the fork is in use
-
 bool	init_frk(t_frk *frk, unsigned char id)
 {
 	if (!frk)

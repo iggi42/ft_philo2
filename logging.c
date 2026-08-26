@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "philo.h"
-#include <pthread.h>
-#include <stdbool.h>
 #include <stdio.h>
 
 void	log_forklift(t_philo *philo)
@@ -34,30 +32,7 @@ void	log_thinking(t_philo *philo)
 	printf("%ld %d is thinking\n", read_timer(), (int)philo->id);
 }
 
-void	log_animated(t_philo *philo)
-{
-	printf("%ld %d was born. left(%p) right(%p)\n", read_timer(),
-		(int)philo->id, philo->left, philo->right);
-}
-
 void	log_died(t_philo *philo)
 {
 	printf("%ld %d died\n", read_timer(), (int)philo->id);
-}
-
-// returns true if no philo has died yet
-bool	log_queue(void (*print_smth)(t_philo *p), t_philo *p)
-{
-	static pthread_mutex_t	io_mut = PTHREAD_MUTEX_INITIALIZER;
-	static bool				io_open;
-	bool					result;
-
-	if (pthread_mutex_lock(&io_mut))
-		return (false);
-	if (print_smth == NULL)
-		return (io_open = true, !pthread_mutex_unlock(&io_mut));
-	if (io_open)
-		io_open = (print_smth(p), log_died != print_smth);
-	result = io_open;
-	return (!pthread_mutex_unlock(&io_mut) && result);
 }
