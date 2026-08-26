@@ -53,8 +53,14 @@ bool	run_sim(t_philo_conf *c)
 	pthread_t	*pthr_id;
 
 	frks = bring_the_cutlery(c->n_phil);
+	if (frks == NULL || 0 >= c->n_phil || c->n_phil > 200)
+		return (cleanup_cutlery(frks, c->n_phil), false);
 	thinkers = create_thinkers(c, frks);
+	if (thinkers == NULL)
+		return (cleanup_cutlery(frks, c->n_phil), false);
 	pthr_id = start_thinkers(c, thinkers);
+	if (pthr_id == NULL)
+		return (false);
 	find_starved(c, thinkers);
 	wait4thinkers(pthr_id, c->n_phil);
 	cleanup_thinkers(thinkers, c->n_phil);

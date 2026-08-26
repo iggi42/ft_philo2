@@ -34,6 +34,8 @@ void	cleanup_cutlery(t_frk *cutlery, size_t n)
 {
 	size_t	i;
 
+	if (cutlery == NULL)
+		return ;
 	i = 0;
 	while (i < n)
 		destroy_frk(&cutlery[i++]);
