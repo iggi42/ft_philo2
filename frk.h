@@ -19,7 +19,7 @@ typedef struct s_frk
 {
 	unsigned char	id;
 	bool			taken;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	takeup_mtx;
 }					t_frk;
 
 // set default values really

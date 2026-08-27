@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "logging.h"
-#include "routine.h"
+#include "philo_types.h"
 #include "utils.h"
 #include <stdlib.h>
 #include <unistd.h>

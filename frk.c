@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "frk.h"
+#include "pthread.h"
+#include <stdbool.h>
 
 // val is true if the fork is in use
 bool	init_frk(t_frk *frk, unsigned char id)
@@ -18,19 +20,19 @@ bool	init_frk(t_frk *frk, unsigned char id)
 		return (false);
 	frk->id = id;
 	frk->taken = false;
-	return (pthread_mutex_init(&frk->mutex, NULL) == 0);
+	return (pthread_mutex_init(&frk->takeup_mtx, NULL) == 0);
 }
 
 bool	destroy_frk(t_frk *frk)
 {
 	if (!frk)
 		return (false);
-	return (pthread_mutex_destroy(&frk->mutex) != 0);
+	return (pthread_mutex_destroy(&frk->takeup_mtx) != 0);
 }
 
 bool	pickup(t_frk *frk)
 {
-	if (!pthread_mutex_lock(&frk->mutex))
+	if (!pthread_mutex_lock(&frk->takeup_mtx))
 		return (frk->taken = true, true);
 	return (false);
 }
@@ -38,5 +40,5 @@ bool	pickup(t_frk *frk)
 bool	putdown(t_frk *frk)
 {
 	frk->taken = false;
-	return (!pthread_mutex_unlock(&frk->mutex));
+	return (!pthread_mutex_unlock(&frk->takeup_mtx));
 }

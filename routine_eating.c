@@ -13,9 +13,10 @@
 #include "frk.h"
 #include "logging.h"
 #include "meal.h"
+#include "philo_types.h"
 #include <unistd.h>
 
-static void	ft_switch(t_frk **a, t_frk **b)
+void	ft_switch(t_frk **a, t_frk **b)
 {
 	void	*c;
 
@@ -35,10 +36,17 @@ static void	sort_cutlery(t_philo *me, t_frk *(*target)[2])
 {
 	(*target)[0] = me->left;
 	(*target)[1] = me->right;
-	if (me->id == 1)
-		ft_switch(&(*target)[0], &(*target)[1]);
-	if ((me->c->n_phil % 2 && (me->id % 2) == 0))
-		ft_switch(&(*target)[0], &(*target)[1]);
+	if (me->c->n_phil % 2 == 0)
+	{
+		if (me->id % 2 == 0)
+			ft_switch(&(*target)[0], &(*target)[1]);
+		return ;
+	}
+}
+
+bool static	philo_special_boy(t_philo *me)
+{
+	bool	has_eaten;
 }
 
 // returns true if it has eaten
@@ -49,8 +57,13 @@ bool	philo_routine_eating(t_philo *me)
 	t_frk	*fs[2];
 	bool	has_eaten;
 
+	if ((me->c->n_phil % 2) == 1)
+		return (philo_special_boy(me));
+	fs[0] = me->left;
+	fs[1] = me->right;
 	has_eaten = false;
-	sort_cutlery(me, &fs);
+	if (me->id % 2 == 0)
+		ft_switch(&fs[0], &fs[1]);
 	if (pickup(fs[0]))
 	{
 		if (!log_queue(log_forklift, me) || (fs[0] == fs[1]))
