@@ -14,6 +14,7 @@
 #include "logging.h"
 #include "meal.h"
 #include "philo_types.h"
+#include <stdbool.h>
 #include <unistd.h>
 
 void	ft_switch(t_frk **a, t_frk **b)
@@ -25,14 +26,14 @@ void	ft_switch(t_frk **a, t_frk **b)
 	*b = c;
 }
 
-static void	philo_put_down(t_frk *fs[2])
+static void	philo_put_down(t_frk *fs[2], t_philo_id id)
 {
-	putdown(fs[0]);
-	putdown(fs[1]);
+	putdown(fs[0], id);
+	putdown(fs[1], id);
 }
 
 // this decides which fork to take up first and which secound
-static void	sort_cutlery(t_philo *me, t_frk *(*target)[2])
+void	sort_cutlery(t_philo *me, t_frk *(*target)[2])
 {
 	(*target)[0] = me->left;
 	(*target)[1] = me->right;
@@ -44,9 +45,12 @@ static void	sort_cutlery(t_philo *me, t_frk *(*target)[2])
 	}
 }
 
+// bool	sync_takeup(unsigned char id, t_frk *f0, t_frk *f1)
 bool static	philo_special_boy(t_philo *me)
 {
-	bool	has_eaten;
+	while (!sync_takeup(me->id, me->left, me->right))
+		usleep(200);
+	return false;
 }
 
 // returns true if it has eaten
@@ -64,20 +68,20 @@ bool	philo_routine_eating(t_philo *me)
 	has_eaten = false;
 	if (me->id % 2 == 0)
 		ft_switch(&fs[0], &fs[1]);
-	if (pickup(fs[0]))
+	if (pickup(fs[0], me->id))
 	{
 		if (!log_queue(log_forklift, me) || (fs[0] == fs[1]))
-			return (putdown(fs[0]), false);
-		if (pickup(fs[1]))
+			return (putdown(fs[0], me->id), false);
+		if (pickup(fs[1], me->id))
 		{
 			if (!log_queue(log_forklift, me) || !log_queue(log_eating, me)
 				|| !set_last_meal2now(me))
-				return (philo_put_down(fs), false);
+				return (philo_put_down(fs, me->id), false);
 			has_eaten = true;
 			usleep(me->c->t2eat * 1000);
-			putdown(fs[1]);
+			putdown(fs[1], me->id);
 		}
-		putdown(fs[0]);
+		putdown(fs[0], me->id);
 	}
 	return (has_eaten);
 }
