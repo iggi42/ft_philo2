@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cutlery.h"
+#include "frk.h"
 #include "utils.h"
 #include <stdlib.h>
 

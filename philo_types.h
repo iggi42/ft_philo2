@@ -12,9 +12,9 @@
 
 #ifndef PHILO_TYPES_H
 # define PHILO_TYPES_H
-# include "frk.h"
 # include "time.h"
 # include <stdbool.h>
+# include <pthread.h>
 # include <stddef.h>
 
 // 0 is not a valid philo id btw
@@ -29,6 +29,17 @@ typedef struct s_philo_conf
 	t_timespan			t2nap;
 	int					max_meals;
 }						t_philo_conf;
+
+/* setting and unsetting taken_by is done to demonstrate */
+/* taken is a fork is taken or not */
+typedef struct s_frk
+{
+	unsigned char	id;
+	bool			taken;
+	unsigned char	taken_by;
+	pthread_mutex_t	taken_mtx;
+	pthread_mutex_t	taken_by_mtx;
+}					t_frk;
 
 typedef struct s_philo
 {

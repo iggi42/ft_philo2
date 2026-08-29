@@ -10,18 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "frk.h"
-#include "pthread.h"
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
 
 // taken is true if the fork is in use
 bool	init_frk(t_frk *frk, unsigned char id)
 {
+	bool crt_by;
+	bool crt_tkn;
+	
 	if (!frk)
 		return (false);
 	frk->id = id;
 	frk->taken = false;
-	return (pthread_mutex_init(&frk->taken_by_mtx, NULL) == 0);
+	crt_by = (pthread_mutex_init(&frk->taken_by_mtx, NULL) == 0);
+	crt_tkn = (pthread_mutex_init(&frk->taken_by_mtx, NULL) == 0);
+	if(crt_by && crt_tkn)
+		return true;
+	crt_by = (pthread_mutex_destroy(&frk->taken_by_mtx) == 0);
+	crt_tkn = (pthread_mutex_destroy(&frk->taken_by_mtx) == 0);
+	return false;
 }
 
 bool	destroy_frk(t_frk *frk)
@@ -31,55 +40,20 @@ bool	destroy_frk(t_frk *frk)
 	return (pthread_mutex_destroy(&frk->taken_by_mtx) != 0);
 }
 
-
-// this needs to seperate error case and return val
-// error case is also the "we need to stop early because another philo died" case
-bool	sync_takeup(unsigned char id, t_frk *f0, t_frk *f1)
-{
-	static pthread_mutex_t	local_mut = PTHREAD_MUTEX_INITIALIZER;
-	bool					result;
-
-	result = false;
-	if (!f0 || !f1)
-		return (false);
-	if (f0->id > f1->id)
-		return (sync_takeup(id, f1, f0));
-	if (!pthread_mutex_lock(&local_mut))
-		return (false);
-	if (pthread_mutex_lock(&f0->taken_mtx) == 0)
-	{
-		if(pthread_mutex_lock(&f1->taken_mtx) == 0)
-		{
-			result = (!f0->taken && !f1->taken);
-			if (result)
-			{
-				//TODO: handle if pickup returns false on mutex error, then put down forks again
-				result = pickup(f0, id);
-				if(result)
-					result = pickup(f1, id);
-			}
-		}
-		pthread_mutex_unlock(&f0->taken_mtx);
-	}
-
-	if (!pthread_mutex_unlock(&local_mut))
-		return (false);
-	return (result);
-}
-
-bool	pickup(t_frk *frk, unsigned char phil_id)
+// returns -1 on error, 0 has not eaten, 1 on has eaten
+bool	pickup(t_frk *frk, t_philo_id id)
 {
 	if (pthread_mutex_lock(&frk->taken_by_mtx))
 		return (false);
-	frk->taken_by = phil_id;
+	frk->taken_by = id;
 	return (true);
 }
 
-bool	putdown(t_frk *frk, unsigned char phil_id)
+bool	putdown(t_frk *frk, t_philo_id phil_id)
 {
 	if (phil_id != frk->taken_by)
 		return (printf("WTF BRO\n"), false);
 	frk->taken_by = 0;
 	frk->taken = false;
-	return (!pthread_mutex_unlock(&frk->taken_mtx));
+	return (pthread_mutex_unlock(&frk->taken_by_mtx) != 0);
 }

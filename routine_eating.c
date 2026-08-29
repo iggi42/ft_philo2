@@ -48,9 +48,24 @@ void	sort_cutlery(t_philo *me, t_frk *(*target)[2])
 // bool	sync_takeup(unsigned char id, t_frk *f0, t_frk *f1)
 bool static	philo_special_boy(t_philo *me)
 {
-	while (!sync_takeup(me->id, me->left, me->right))
-		usleep(200);
-	return false;
+	int	takenup_result;
+
+	takenup_result = 0;
+	while (takenup_result == 0)
+	{
+		takenup_result = sync_takeup(me, me->left, me->right);
+		usleep(100);
+	}
+	if (takenup_result == 1)
+	{
+		if (!log_queue(log_eating, me) || !set_last_meal2now(me))
+			return (false);
+		usleep(me->c->t2eat * 1000);
+		// TODO handle to react to mutex errors
+		if(sync_putdown(me, me->left, me->right) || log_queue(log_eating, me))
+			return (false);
+	}
+	return (takenup_result == -1);
 }
 
 // returns true if it has eaten
