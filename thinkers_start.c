@@ -36,7 +36,7 @@ static pthread_t	*start_threats(t_philo_conf *c, t_philo *philo,
 			wait4thinkers(thread_ids, i);
 			return (NULL);
 		}
-		// usleep(100);
+		usleep(50);
 		i++;
 	}
 	return (thread_ids);

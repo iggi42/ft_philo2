@@ -12,14 +12,15 @@
 NAME = philo
 CC = cc
 CFLAGS += -MD -Wall -Wextra -Werror
-CFLAGS += -g -O1 -fsanitize=thread
-
+# CFLAGS += -g -O1 -fsanitize=thread
+CFLAGS += -O3
+ 
 # utils function
 SRCS += utils.c ph_main.c time.c
 # core logic
 SRCS += frk.c cutlery.c run_sim.c meal.c routine.c routine_eating.c
 SRCS += thinkers.c thinkers_start.c
-SRCS += frk_sync_takeup.c
+SRCS += frk_sync_do.c frk_sync.c
 # logging
 SRCS += logging.c log_queue.c
 

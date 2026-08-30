@@ -24,7 +24,7 @@ t_frk	*bring_the_cutlery(size_t n)
 	result = ft_calloc(n, sizeof(t_frk));
 	while (result != NULL && i < n)
 	{
-		if (!init_frk(&result[i], i))
+		if (!frk_init(&result[i], i))
 			result = (free(result), NULL);
 		i++;
 	}
@@ -39,6 +39,6 @@ void	cleanup_cutlery(t_frk *cutlery, size_t n)
 		return ;
 	i = 0;
 	while (i < n)
-		destroy_frk(&cutlery[i++]);
+		frk_destroy(&cutlery[i++]);
 	free(cutlery);
 }

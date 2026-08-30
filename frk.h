@@ -17,18 +17,20 @@
 # include <stdbool.h>
 
 // set default values really
-bool	init_frk(t_frk *frk, unsigned char id);
-bool	destroy_frk(t_frk *frk);
+bool	frk_init(t_frk *frk, unsigned char id);
+bool	frk_destroy(t_frk *frk);
 
 // executes do_somthing with the philo after locking both fork mutexes for "taken"
-int	frk_sync_do(int (*do_smth)(void *me), t_philo *me);
+int	frk_sync_do(int (*do_smth)(t_philo *me), t_philo *me);
 
 // this needs to seperate error case and return val
 // error case is also the "we need to stop early because another philo died" case
 // returns -1 on error, 0 has not eaten, 1 on has eaten
-int		sync_takeup(t_philo *me, t_frk *f0, t_frk *f1);
-int		sync_putdown(t_philo *me, t_frk *f0, t_frk *f1);
-//
-bool	pickup(t_frk *frk, t_philo_id phil_id);
-bool	putdown(t_frk *frk, t_philo_id phil_id);
+int		frk_sync_takeup(t_philo *me);
+int		frk_sync_putdown(t_philo *me);
+
+// does what the names suggest
+// returns true => no error
+bool	frk_pickup(t_frk *frk);
+bool	frk_putdown(t_frk *frk);
 #endif

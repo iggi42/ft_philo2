@@ -36,9 +36,7 @@ typedef struct s_frk
 {
 	unsigned char	id;
 	bool			taken;
-	unsigned char	taken_by;
 	pthread_mutex_t	taken_mtx;
-	pthread_mutex_t	taken_by_mtx;
 }					t_frk;
 
 typedef struct s_philo

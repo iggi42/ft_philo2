@@ -15,45 +15,36 @@
 #include <stdio.h>
 
 // taken is true if the fork is in use
-bool	init_frk(t_frk *frk, unsigned char id)
+bool	frk_init(t_frk *frk, unsigned char id)
 {
-	bool crt_by;
-	bool crt_tkn;
-	
 	if (!frk)
 		return (false);
-	frk->id = id;
+	frk->id = id + 5;
 	frk->taken = false;
-	crt_by = (pthread_mutex_init(&frk->taken_by_mtx, NULL) == 0);
-	crt_tkn = (pthread_mutex_init(&frk->taken_by_mtx, NULL) == 0);
-	if(crt_by && crt_tkn)
+	if(pthread_mutex_init(&frk->taken_mtx, NULL) == 0)
 		return true;
-	crt_by = (pthread_mutex_destroy(&frk->taken_by_mtx) == 0);
-	crt_tkn = (pthread_mutex_destroy(&frk->taken_by_mtx) == 0);
+	pthread_mutex_destroy(&frk->taken_mtx);
 	return false;
 }
 
-bool	destroy_frk(t_frk *frk)
+bool	frk_destroy(t_frk *frk)
 {
 	if (!frk)
 		return (false);
-	return (pthread_mutex_destroy(&frk->taken_by_mtx) != 0);
+	return (pthread_mutex_destroy(&frk->taken_mtx) != 0);
 }
 
 // returns -1 on error, 0 has not eaten, 1 on has eaten
-bool	pickup(t_frk *frk, t_philo_id id)
+bool	frk_pickup(t_frk *frk)
 {
-	if (pthread_mutex_lock(&frk->taken_by_mtx))
+	if (pthread_mutex_lock(&frk->taken_mtx))
 		return (false);
-	frk->taken_by = id;
+	frk->taken = true;
 	return (true);
 }
 
-bool	putdown(t_frk *frk, t_philo_id phil_id)
+bool	frk_putdown(t_frk *frk)
 {
-	if (phil_id != frk->taken_by)
-		return (printf("WTF BRO\n"), false);
-	frk->taken_by = 0;
 	frk->taken = false;
-	return (pthread_mutex_unlock(&frk->taken_by_mtx) != 0);
+	return (pthread_mutex_unlock(&frk->taken_mtx) != 0);
 }
