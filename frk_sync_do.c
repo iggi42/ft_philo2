@@ -53,7 +53,7 @@ int	frk_sync_do(int (*do_smth)(t_philo *me), t_philo *me)
 
 	if (me == NULL || me->left == NULL || me->right == NULL)
 		return (-1);
-	// if(me->c->n_phil < 50)
+	// if(me->c->n_phil > 50)
 	// 	strat = mtx_safely_do;
 	// else
 	strat = mtx_extra_safely_do;

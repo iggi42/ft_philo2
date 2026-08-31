@@ -21,7 +21,7 @@ bool	frk_init(t_frk *frk, unsigned char id)
 		return (false);
 	frk->id = id + 5;
 	frk->taken = false;
-	if(pthread_mutex_init(&frk->taken_mtx, NULL) == 0)
+	if (pthread_mutex_init(&frk->taken_mtx, NULL) == 0)
 		return true;
 	pthread_mutex_destroy(&frk->taken_mtx);
 	return false;

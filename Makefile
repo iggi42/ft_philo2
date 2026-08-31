@@ -11,9 +11,9 @@
 # **************************************************************************** #
 NAME = philo
 CC = cc
-CFLAGS += -MD -Wall -Wextra -Werror
+CFLAGS += -MD -Wall -Wextra -Werror -O1
 # CFLAGS += -g -O1 -fsanitize=thread
-CFLAGS += -O3
+CFLAGS += -g
  
 # utils function
 SRCS += utils.c ph_main.c time.c

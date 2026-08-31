@@ -9,9 +9,11 @@
 /*   Updated: 2026/07/24 01:10:01 by fkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include "logging.h"
+#include "time.h"
 #include <stddef.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 /// op can be
 // 0 to start the timer from zero
@@ -40,4 +42,21 @@ void	start_timer(void)
 long	read_timer(void)
 {
 	return (timer(1));
+}
+
+static void	log_bs(t_philo *philo)
+{
+	(void)philo;
+}
+
+bool	philo_sleep(long wait_me)
+{
+	t_timespan end = read_timer() + wait_me;
+	while (read_timer() <= end)
+	{
+		if (!log_queue(log_bs, NULL))
+			return (false);
+		usleep(100);
+	}
+	return (true);
 }

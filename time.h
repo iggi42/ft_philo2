@@ -13,10 +13,12 @@
 // time related things
 #ifndef TIME_H
 # define TIME_H
+# include <stdbool.h>
 
 typedef long	t_timespan;
 
 void			start_timer(void);
 t_timespan		read_timer(void);
+bool			philo_sleep(long wait_me);
 
 #endif

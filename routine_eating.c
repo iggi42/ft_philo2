@@ -51,20 +51,23 @@ bool static	philo_special_boy(t_philo *me)
 	int		takenup_result;
 	long	time_since_last_meal;
 
+	time_since_last_meal = read_philo_state(me);
+	if(time_since_last_meal == -1)
+		return false;
 	takenup_result = 0;
 	while (takenup_result == 0)
 	{
 		takenup_result = frk_sync_takeup(me);
-		time_since_last_meal = read_philo_state(me);
-		if (time_since_last_meal == -1)
+		if (takenup_result == -1)
 			return (false);
-		usleep(10 + (me->c->t2die - time_since_last_meal));
+		usleep(1);
 	}
 	if (takenup_result == 1)
 	{
 		if (!log_queue(log_eating, me) || !set_last_meal2now(me))
 			return (false);
-		usleep(me->c->t2eat * 1000);
+		if (!philo_sleep(me->c->t2eat))
+			return (false);
 		if (frk_sync_putdown(me) == -1)
 			return (false);
 	}
@@ -95,8 +98,8 @@ bool	philo_routine_eating(t_philo *me)
 			if (!log_queue(log_forklift, me) || !log_queue(log_eating, me)
 				|| !set_last_meal2now(me))
 				return (philo_put_down(fs), false);
+			philo_sleep(me->c->t2eat);
 			has_eaten = true;
-			usleep(me->c->t2eat * 1000);
 			frk_putdown(fs[1]);
 		}
 		frk_putdown(fs[0]);

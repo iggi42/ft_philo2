@@ -22,7 +22,7 @@ static bool	philo_routine_sleep(t_philo *thinker)
 {
 	if (!log_queue(log_sleeping, thinker))
 		return (false);
-	usleep(thinker->c->t2nap * 1000);
+	philo_sleep(thinker->c->t2nap);
 	return (log_queue(log_thinking, thinker));
 }
 
